@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Info Finder</title>
+    <title>Chat AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Phone Info Finder</h1>
-        <div>
-            <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., +123456789)" />
-            <button id="searchBtn">Search</button>
+        <h1>Chat AI</h1>
+        <div id="chat-container">
+            <!-- Pesan chat akan ditampilkan di sini -->
         </div>
-        <h2 id="result"></h2>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Ketik pesan Anda...">
+            <button id="send-button">Kirim</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
