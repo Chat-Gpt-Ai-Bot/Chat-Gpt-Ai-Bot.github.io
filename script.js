@@ -1,38 +1,52 @@
-const apiKey = '0420ace50535adb6f3aab189ed30aa17'; // Ganti dengan API key Anda dari apilayer.net
-const searchBtn = document.getElementById('searchBtn');
-const result = document.getElementById('result');
+const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest';
+const apiKey = 'AIzaSyC72tWywV-mHfLf0Qdr1OlwkPA0IBmPaJs';
 
-searchBtn.addEventListener('click', async () => {
-    const phoneNumber = document.getElementById('phoneNumber').value;
+const chatContainer = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
 
-    if(!phoneNumber) {
-        result.innerText = "Please enter a phone number.";
-        return;
-    }
-    
-    const url = `https://api.apilayer.com/phone_validation/validate?number=${phoneNumber}`;
-    
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'apikey': apiKey
-            }
-        });
-
-        const data = await response.json();
-        
-        if(data.valid) {
-            result.innerHTML = `
-                <strong>Number:</strong> ${data.international_format}<br>
-                <strong>Carrier:</strong> ${data.carrier}<br>
-                <strong>Location:</strong> ${data.location}<br>
-                <strong>Country:</strong> ${data.country_code}<br>
-            `;
-        } else {
-            result.innerText = "Invalid phone number.";
-        }
-    } catch (error) {
-        result.innerText = `Error: ${error.message}`;
+sendButton.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
     }
 });
+
+function sendMessage() {
+    const message = userInput.value;
+    if (message.trim() !== '') {
+        displayMessage('Anda', message);
+        userInput.value = '';
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiKey
+            },
+            body: JSON.stringify({
+                queryInput: {
+                    text: {
+                        text: message,
+                        languageCode: 'id'
+                    }
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const aiResponse = data.queryResult.fulfillmentText;
+            displayMessage('AI', aiResponse);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+function displayMessage(sender, message) {
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+    chatContainer.appendChild(messageElement);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
