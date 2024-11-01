@@ -1,4 +1,4 @@
-const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest';
+const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=';
 const apiKey = 'AIzaSyC72tWywV-mHfLf0Qdr1OlwkPA0IBmPaJs';
 
 const chatContainer = document.getElementById('chat-container');
